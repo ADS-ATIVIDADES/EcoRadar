@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 void main() {
   runApp(EcoradarApp());
@@ -43,6 +44,17 @@ class HomePage extends StatelessWidget {
           SizedBox(height: 20),
           Expanded(child: NewsListPage()), // Lista de notícias
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.map),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MapPage(),
+            ),
+          );
+        },
       ),
     );
   }
@@ -150,6 +162,25 @@ class NewsDetailPage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class MapPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Mapa'),
+      ),
+      body: GoogleMap(
+        initialCameraPosition: CameraPosition(
+          target: LatLng(
+              -23.55052, -46.633308), // Localização inicial (São Paulo, Brasil)
+          zoom: 12,
+        ),
+        mapType: MapType.normal,
       ),
     );
   }
