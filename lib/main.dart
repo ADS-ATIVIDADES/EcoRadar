@@ -29,12 +29,24 @@ class HomePage extends StatelessWidget {
       body: Column(
         children: [
           SizedBox(height: 16),
-          // Exibição da logo como asset
+          // Exibição da logo como asset com tratamento de erro
           Padding(
             padding: const EdgeInsets.all(16.0),
-            child: Image.asset(
-              'assets/images/ecoradar.PNG', // Caminho da imagem
-              height: 250,
+            child: Builder(
+              builder: (context) {
+                try {
+                  return Image.asset(
+                    'assets/images/ecoradar.PNG', // Caminho da imagem
+                    height: 250,
+                  );
+                } catch (e) {
+                  // Exibe mensagem de erro se a imagem falhar
+                  return Text(
+                    'Erro ao carregar a logo. Verifique o caminho.',
+                    style: TextStyle(color: Colors.red),
+                  );
+                }
+              },
             ),
           ),
           Text(
@@ -98,33 +110,49 @@ class NewsListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: news.length,
-      itemBuilder: (context, index) {
-        return Card(
-          margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: ListTile(
-            leading: Icon(Icons.eco, color: Colors.green, size: 32),
-            title: Text(
-              news[index].title,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+    try {
+      // Simulação de erro: descomente a linha abaixo para testar
+      // throw Exception("Erro ao carregar as notícias.");
+
+      if (news.isEmpty) throw Exception("Nenhuma notícia disponível no momento.");
+
+      return ListView.builder(
+        itemCount: news.length,
+        itemBuilder: (context, index) {
+          return Card(
+            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
             ),
-            trailing: Icon(Icons.arrow_forward, color: Colors.green),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => NewsDetailPage(news: news[index]),
-                ),
-              );
-            },
-          ),
-        );
-      },
-    );
+            child: ListTile(
+              leading: Icon(Icons.eco, color: Colors.green, size: 32),
+              title: Text(
+                news[index].title,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              ),
+              trailing: Icon(Icons.arrow_forward, color: Colors.green),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => NewsDetailPage(news: news[index]),
+                  ),
+                );
+              },
+            ),
+          );
+        },
+      );
+    } catch (e) {
+      // Exibe mensagem de erro em caso de falha
+      return Center(
+        child: Text(
+          'Erro ao carregar as notícias: ${e.toString()}',
+          style: TextStyle(color: Colors.red, fontSize: 16),
+          textAlign: TextAlign.center,
+        ),
+      );
+    }
   }
 }
 
@@ -141,26 +169,44 @@ class NewsDetailPage extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              news.title,
-              style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 20),
-            Text(
-              news.content,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.normal,
-                height: 1.5, // Melhora o espaçamento entre linhas
-              ),
-            ),
-          ],
+        child: Builder(
+          builder: (context) {
+            try {
+              // Simulação de erro: descomente para testar
+              // throw Exception("Erro ao carregar detalhes da notícia.");
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    news.title,
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    news.content,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
+                      height: 1.5, // Melhora o espaçamento entre linhas
+                    ),
+                  ),
+                ],
+              );
+            } catch (e) {
+              // Exibe mensagem de erro caso falhe ao carregar os detalhes
+              return Center(
+                child: Text(
+                  'Erro ao carregar os detalhes da notícia: ${e.toString()}',
+                  style: TextStyle(color: Colors.red, fontSize: 16),
+                  textAlign: TextAlign.center,
+                ),
+              );
+            }
+          },
         ),
       ),
     );
