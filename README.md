@@ -1,14 +1,20 @@
 # EcoRadar
 
-EcoRadar é um aplicativo Flutter focado em sustentabilidade e preservação ambiental. Ele oferece notícias sobre temas ecológicos, um mapa interativo para explorar locais relacionados ao meio ambiente e monitoramento de sensores do dispositivo para promover conscientização sobre o impacto ambiental.
+EcoRadar é um aplicativo Flutter focado em sustentabilidade e preservação ambiental. Ele oferece notícias sobre temas ecológicos armazenadas localmente em SQLite.
 
 ## Funcionalidades
 
-- **Notícias Sustentáveis**: Lista de notícias sobre plantas urbanas, reciclagem, energia solar, desmatamento e preservação de áreas verdes.
-- **Mapa Interativo**: Integração com Google Maps para visualizar locais de interesse ambiental (inicialmente focado em São Paulo, Brasil).
-- **Monitoramento de Acelerômetro**: Exibe dados em tempo real do acelerômetro do dispositivo (X, Y, Z) para demonstrar interação com sensores.
+- **Notícias Sustentáveis**: Lista de notícias sobre plantas urbanas, reciclagem, energia solar, desmatamento e preservação de áreas verdes, armazenadas offline.
+- **Banco de Dados Local**: Integração com SQLite via Drift para persistência de dados.
 - **Tratamento de Erros**: Implementação robusta de try-catch para lidar com falhas no carregamento de imagens e dados.
-- **Interface Responsiva**: Design limpo com Material Design, ícones ecológicos e navegação intuitiva.
+
+## Tecnologias Utilizadas
+
+- **Flutter**: Framework para desenvolvimento de apps multiplataforma.
+- **Dart**: Linguagem de programação.
+- **Drift**: ORM para SQLite com geração de código.
+- **SQLite**: Banco de dados local.
+- **Assets**: Imagens e recursos locais.
 
 ## Tecnologias Utilizadas
 
@@ -57,36 +63,37 @@ EcoRadar é um aplicativo Flutter focado em sustentabilidade e preservação amb
 
 ```
 lib/
-├── main.dart                 # Arquivo principal do app
-├── Parte_1_APP.dart          # Versão inicial básica
-├── Parte_2_APP.dart          # Adiciona logo e dados estruturados
-├── Parte_3_APP_MAPS.dart     # Integra mapa
-├── Parte_4_APP_ACELEROMETROS.dart  # Adiciona acelerômetro
-└── Parte_5_APP_EXCEÇÕES.dart      # Adiciona tratamento de erros
-
-assets/
-└── images/
-    └── ecoradar.PNG          # Logo do app
-
-pubspec.yaml                  # Configurações e dependências
-README.md                     # Este arquivo
+├── main.dart                 # Arquivo principal do app (main e EcoradarApp)
+├── models/
+│   └── news.dart             # Definição da tabela News
+├── services/
+│   └── database.dart         # AppDatabase com métodos CRUD
+└── pages/
+    ├── home_page.dart        # HomePage com logo e notícias
+    ├── news_list_page.dart   # Lista de notícias do banco
+    └── news_detail_page.dart # Detalhes da notícia
 ```
 
 ## Desenvolvimento
 
-O projeto evoluiu em etapas:
-- **Parte 1**: Navegação básica com títulos de notícias.
-- **Parte 2**: UI aprimorada com logo e conteúdo completo.
-- **Parte 3**: Integração de mapa.
-- **Parte 4**: Monitoramento de sensores.
-- **Parte 5**: Tratamento de exceções para robustez.
+O projeto foi refatorado para separar o código em arquivos organizados por responsabilidade: modelos em `models/`, páginas em `pages/`, e o app principal em `main.dart`. Isso melhora a manutenção e escalabilidade.
+
+## Integração com Banco de Dados Local (SQLite)
+
+O app usa o pacote **Drift** para gerenciar SQLite localmente, armazenando notícias offline.
+
+### Como Usar
+1. Execute `flutter pub run build_runner build` para gerar código.
+2. O banco é criado automaticamente no diretório de dados do app.
+3. Use `AppDatabase` para operações: `getAllNews()`, `insertNews()`, etc.
 
 ## Próximos Passos (TODO)
 
-- [ ] **Integração com APIs de Notícias**: Conectar a APIs externas (ex.: NewsAPI ou APIs ambientais) para buscar notícias em tempo real sobre sustentabilidade.
-- [ ] **Banco de Dados Local (SQLite)**: Implementar SQLite para salvar notícias localmente, permitindo acesso offline e cache de dados.
+- [x] **Integração com APIs de Notícias**: Conectar a APIs externas (ex.: NewsAPI ou APIs ambientais) para buscar notícias em tempo real sobre sustentabilidade.
+- [x] **Banco de Dados Local (SQLite)**: Implementar SQLite para salvar notícias localmente, permitindo acesso offline e cache de dados.
 - [ ] **Notificações Push**: Adicionar notificações para novas notícias ou alertas ambientais.
 - [ ] **Testes Unitários**: Expandir cobertura de testes para todas as funcionalidades.
+- [ ] **Integração com APIs Externas**: Buscar notícias de APIs reais em vez de dados hardcoded.
 
 ## Licença
 
