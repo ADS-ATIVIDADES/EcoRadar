@@ -3,6 +3,7 @@ import 'news_list_page.dart';
 import '../services/database.dart';
 import '../services/sync_service.dart';
 import '../services/apitube_service.dart';
+import '../config.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -242,6 +243,48 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: Config.debugBanner
+          ? AppBar(
+              backgroundColor: Colors.transparent,
+              title: Text(' '),
+              actions: [
+                if (_isSyncing)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    ),
+                  )
+                else
+                  IconButton(
+                    icon: Icon(Icons.sync),
+                    onPressed: _manualSync,
+                    tooltip: 'Sincronizar Notícias',
+                  ),
+                IconButton(
+                  icon: Icon(Icons.info_outline),
+                  onPressed: _showIntegrationLogs,
+                  tooltip: 'Ver Logs de Integração',
+                ),
+                IconButton(
+                  icon: Icon(Icons.history),
+                  onPressed: _showAllSyncLogs,
+                  tooltip: 'Ver Histórico de Sincronização',
+                ),
+                IconButton(
+                  icon: Icon(Icons.delete_forever, color: Colors.red),
+                  onPressed: _clearArticles,
+                  tooltip: 'Limpar Todos os Artigos',
+                ),
+                SizedBox(width: 60),
+              ],
+            )
+          : null,
       body: Column(
         children: [
           SizedBox(height: 16),
