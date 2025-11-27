@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
               builder: (context) {
                 try {
                   return Image.asset(
-                    'assets/images/ecoradar.PNG', // Caminho da imagem
+                    'assets/images/ecoradar.png', // Caminho da imagem
                     height: 250,
                   );
                 } catch (e) {
